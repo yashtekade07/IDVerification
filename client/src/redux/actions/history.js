@@ -2,6 +2,7 @@ import {server} from '../store'
 import axios from 'axios'
 
 export const getHistory=({id='',name='',last_name='',request=""})=>async(dispatch)=>{
+    // calling history from db
     try {
         dispatch({type:"getHistoryRequest"});
         const {data}=await axios.get(`${server}/history?identification_number=${id}&name=${name}&last_name=${last_name}&request=${request}`,{

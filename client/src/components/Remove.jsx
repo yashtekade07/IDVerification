@@ -8,7 +8,6 @@ import {
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { Delete } from '../redux/actions/user.js';
 import toast from 'react-hot-toast';
 const Remove = () => {
@@ -21,7 +20,7 @@ const Remove = () => {
   };
   useEffect(() => {
     if (error) {
-      toast.error(error);
+      toast.error('dfa');
       dispatch({ type: 'clearError' });
     }
     if (message) {

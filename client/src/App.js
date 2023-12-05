@@ -7,6 +7,7 @@ import Search from './components/Search'
 import History from "./components/History";
 import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
+import { Toaster } from "react-hot-toast";
 function App() {
   const {loading}=useSelector(state=>state.user);
   const {loading:profileloading}=useSelector(state=>state.profile)
@@ -17,11 +18,12 @@ function App() {
     <Header/>
     <Routes>
       <Route path = '/' element={<Home/>}/>
-      <Route path = '/search' element={<Search/>}/>
+      <Route path = '/search' element={<Search/>}/> 
       <Route path = '/update' element={<Update/>}/>
       <Route path = '/remove' element={<Remove/>}/>
       <Route path = '/history' element={<History/>}/>
     </Routes> 
+    <Toaster/>
   </>)}
   </Router>
   )

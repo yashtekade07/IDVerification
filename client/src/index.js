@@ -8,7 +8,7 @@ import store from './redux/store';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ReduxProvide store={store}>
+    <ReduxProvide store={store}> 
       <ChakraProvider>
         <App />
       </ChakraProvider>

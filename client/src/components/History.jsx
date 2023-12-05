@@ -31,7 +31,6 @@ const History = () => {
     (state) => state.history
   );
   const submitHandler = async (e) => {
-    console.log('After clicking submit', name, lastName, id);
     e.preventDefault();
     await dispatch(
       getHistory({ id, name: name, last_name: lastName, request: request })
@@ -46,7 +45,6 @@ const History = () => {
     setTimeout(() => setCopied(false), 1500); // Reset copy state after 1.5 seconds
   };
   useEffect(() => {
-    console.log(history);
     if (error) {
       toast.error(error);
       dispatch({ type: 'clearError' });

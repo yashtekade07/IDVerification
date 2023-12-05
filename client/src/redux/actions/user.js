@@ -2,6 +2,7 @@ import {server} from '../store'
 import axios from 'axios'
 
 export const View=({id='',name='',last_name=''})=>async(dispatch)=>{
+    // viewing existing profile from db
     try {
         dispatch({type:"getRequest"});
         const {data}=await axios.get(`${server}/user?identification_number=${id}&name=${name}&last_name=${last_name}`)
@@ -11,6 +12,7 @@ export const View=({id='',name='',last_name=''})=>async(dispatch)=>{
     }
 }
 export const Upload=(identification_number,name,last_name,date_of_birth,date_of_issue,date_of_expiry)=>async(dispatch)=>{
+    // registering  profile to db
     try {
         dispatch({type:"postRequest"});
         const {data}=await axios.post(`${server}/user`,{identification_number,name,last_name,'date-of-birth': date_of_birth,
@@ -28,7 +30,8 @@ export const Upload=(identification_number,name,last_name,date_of_birth,date_of_
 }
 
 export const Update=(identification_number,name,newId,last_name,date_of_birth,date_of_issue,date_of_expiry)=>async(dispatch)=>{
-        try {
+    // updating profile    
+    try {
         dispatch({type:"updateProfileRequest"});
         const {data}=await axios.put(`${server}/user`,{
             identification_number: identification_number,
@@ -50,6 +53,7 @@ export const Update=(identification_number,name,newId,last_name,date_of_birth,da
     }
 }
 export const Delete=(identification_number)=>async(dispatch)=>{
+    //deleting profile
     try {
         dispatch({type:"deleteProfileRequest"});
         const {data}=await axios.delete(`${server}/user`,{

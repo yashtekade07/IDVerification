@@ -3,9 +3,9 @@ import {getUser,registerUser,updateUser,deleteUser} from "../controllers/userCon
 import getHistory from '../controllers/historyController.js';
 const router=express.Router();
 
-router.route('/user').get(getUser)
-                     .post(registerUser)
-                     .put(updateUser)
-                     .delete(deleteUser);
-router.route('/history').get(getHistory);
+router.route('/user').get(getUser) // getUser with regex
+                     .post(registerUser) // add new user to db
+                     .put(updateUser) // update existing details
+                     .delete(deleteUser); // delete user
+router.route('/history').get(getHistory); // history
 export default router;

@@ -21,7 +21,6 @@ const Update = () => {
   const [dateOfExpiry, setDateOfExpiry] = useState();
   const { loading, message, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  //   const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
     await dispatch(

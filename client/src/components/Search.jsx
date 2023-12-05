@@ -53,7 +53,6 @@ const Search = () => {
       toast.success(message);
       dispatch({ type: 'clearMessage' });
     }
-    // dispatch(View({ id:'', name='', lastName }));
   }, [message, error, dispatch]);
 
   return (

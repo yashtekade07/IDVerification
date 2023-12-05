@@ -36,9 +36,7 @@ const Home = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [imageDetails, setImageDetails] = useState(null);
-  const [image, setImage] = useState(null, () => {
-    console.log(image);
-  });
+  const [image, setImage] = useState(null);
   const [copied, setCopied] = useState(false);
   const { profile, loading, error, message } = useSelector(
     (state) => state.profile
@@ -60,7 +58,6 @@ const Home = () => {
         setImage(reader.result);
         setSelectedImage(file);
       };
-      console.log(image);
     }
     if (localStorage.getItem('uploadedImage')) {
       localStorage.removeItem('uploadedImage');
