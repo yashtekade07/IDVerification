@@ -5,9 +5,14 @@ import Update from "./components/Update";
 import Remove from "./components/Remove";
 import Search from './components/Search'
 import History from "./components/History";
+import Loader from "./components/Loader";
+import { useSelector } from "react-redux";
 function App() {
+  const {loading}=useSelector(state=>state.user);
   return (
-  <Router>
+    <Router>
+    {loading?(<Loader/>):(
+      <>
     <Header/>
     <Routes>
       <Route path = '/' element={<Home/>}/>
@@ -16,8 +21,9 @@ function App() {
       <Route path = '/remove' element={<Remove/>}/>
       <Route path = '/history' element={<History/>}/>
     </Routes> 
+  </>)}
   </Router>
-  );
+  )
 }
 
 export default App;

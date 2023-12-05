@@ -19,9 +19,10 @@ import {
   Tbody,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Upload } from '../redux/actions/user.js';
+import { Upload, View } from '../redux/actions/user.js';
 import toast from 'react-hot-toast';
 import ReactJson from 'react-json-view';
+import Loader from './Loader.jsx';
 export const fileUploadCss = {
   cursor: 'pointer',
   marginLeft: '-5%',
