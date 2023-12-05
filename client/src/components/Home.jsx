@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import {
   Button,
@@ -20,6 +20,8 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Upload } from '../redux/actions/user.js';
+import toast from 'react-hot-toast';
+import ReactJson from 'react-json-view';
 export const fileUploadCss = {
   cursor: 'pointer',
   marginLeft: '-5%',
@@ -34,7 +36,8 @@ const Home = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [imageDetails, setImageDetails] = useState(null);
   const [image, setImage] = useState(null);
-  const { user, loading } = useSelector((state) => state.user);
+  const [copied, setCopied] = useState(false);
+  const { user, loading, error, message } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const handleImageChange = (event) => {
@@ -158,20 +161,38 @@ const Home = () => {
       );
     };
   };
+  const jsonHandler = async () => {
+    navigator.clipboard
+      .writeText(JSON.stringify(user, null, 2))
+      .then(() => setCopied(true))
+      .catch((err) => console.error('Failed to copy:', err));
+
+    setTimeout(() => setCopied(false), 1500); // Reset copy state after 1.5 seconds
+  };
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+  }, [message, error]);
 
   return (
     <div className='container'>
       <Stack
-        direction={['column', 'row']}
+        direction={['column']}
         height='100%'
         display={'flex'}
         justifyContent={['center', 'space-between']}
         alignItems='center'
-        spacing={['16', '56']}
+        spacing={['4']}
       >
         <VStack width={'full'} alignItems={['center']} spacing={'8'}>
           <div>
-            <Box my={'-8'} display={'flex'} justifyContent={'center'}>
+            <Box my={'3'} display={'flex'} justifyContent={'center'}>
               <Avatar src={selectedImage} size={'xl'} mt={'50px'} mb={'40px'} />
             </Box>
             <Input
@@ -190,47 +211,58 @@ const Home = () => {
             <Button isLoading={loading} onClick={handleUpload} mt={'4px'}>
               Upload
             </Button>
-            {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            {user && (
-              <>
-                <HStack>
-                  <Box p={['0', '12']} overflowX={'auto'}>
-                    <Heading
-                      textTransform={'uppercase'}
-                      textAlign={['center', 'left']}
-                      my={'16'}
-                      children={'All Users'}
-                    />
-                    <TableContainer w={['100vw', 'full']}>
-                      <Table variant={'simple'} size={'lg'}>
-                        <Thead>
-                          <Tr>
-                            <Th>Identifiction Number</Th>
-                            <Th>Name</Th>
-                            <Th>Last Name</Th>
-                            <Th>Date of Birth</Th>
-                            <Th>Date of Issue</Th>
-                            <Th>Date of Expiry</Th>
-                          </Tr>
-                        </Thead>
-                        <Tbody>{user && <Row item={user} />}</Tbody>
-                      </Table>
-                    </TableContainer>
-                  </Box>
-                  <Box></Box>
-                </HStack>
-              </>
-            )}
           </div>
+        </VStack>
+        <VStack>
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+          {user && (
+            <>
+              <HStack maxW={'80vw'}>
+                <Box p={['0', '12']} overflowX={'auto'}>
+                  <Heading
+                    textTransform={'uppercase'}
+                    textAlign={['center', 'left']}
+                    my={'16'}
+                    children={'All Users'}
+                  />
+                  <TableContainer w={['100vw', 'full']}>
+                    <Table variant={'simple'} size={'lg'}>
+                      <Thead>
+                        <Tr>
+                          <Th>JSON</Th>
+                          <Th>Identifiction Number</Th>
+                          <Th>Name</Th>
+                          <Th>Last Name</Th>
+                          <Th>Date of Birth</Th>
+                          <Th>Date of Issue</Th>
+                          <Th>Date of Expiry</Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {user && <Row item={user} jsonHandler={jsonHandler} />}
+                      </Tbody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+                <Box></Box>
+              </HStack>
+            </>
+          )}
         </VStack>
       </Stack>
     </div>
   );
 };
 export default Home;
-function Row({ item }) {
+function Row({ item, jsonHandler }) {
   return (
     <Tr>
+      <Td>
+        <Td>
+          <ReactJson src={item} collapsed={true} />
+        </Td>
+        <Button onClick={jsonHandler}> copy</Button>
+      </Td>
       <Td>{item.identification_number}</Td>
       <Td>{item.name}</Td>
       <Td>{item.last_name}</Td>

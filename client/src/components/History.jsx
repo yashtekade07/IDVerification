@@ -18,10 +18,12 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getHistory } from '../redux/actions/history.js';
 import toast from 'react-hot-toast';
+import ReactJson from 'react-json-view';
 const History = () => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [copied, setCopied] = useState(false);
   const dispatch = useDispatch();
   const { loading, history, message, error } = useSelector(
     (state) => state.history
@@ -29,6 +31,14 @@ const History = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     await dispatch(getHistory({ id, name, lastName }));
+  };
+  const jsonHandler = async () => {
+    navigator.clipboard
+      .writeText(JSON.stringify(history, null, 2))
+      .then(() => setCopied(true))
+      .catch((err) => console.error('Failed to copy:', err));
+
+    setTimeout(() => setCopied(false), 1500); // Reset copy state after 1.5 seconds
   };
   useEffect(() => {
     if (error) {
@@ -52,14 +62,12 @@ const History = () => {
       >
         <form onSubmit={submitHandler}>
           <Heading
-            alignItems={['center']}
-            maxW={'200px'}
-            fontFamily={'sans-serif'}
-            noOfLines={3}
-            size={'xl'}
+            textTransform={'uppercase'}
+            textAlign={['center']}
+            my={'16'}
             children={'History'}
-            pb={20}
           />
+
           <Text children={'Identification Number'} fontWeight={'bold'} />
           <Input
             value={id}
@@ -95,16 +103,12 @@ const History = () => {
         </form>
         <>
           <Box p={['0', '12']} overflowX={'auto'}>
-            <Heading
-              textTransform={'uppercase'}
-              textAlign={['center', 'left']}
-              my={'16'}
-              children={'History'}
-            />
-            <TableContainer w={['100vw', 'full']}>
+            <TableContainer maxWw={['70vw', 'full']}>
               <Table variant={'simple'} size={'lg'}>
                 <Thead>
                   <Tr>
+                    <Th>JSON</Th>
+                    <Th>Success</Th>
                     <Th>Request</Th>
                     <Th>Message</Th>
                     <Th>Identifiction Number</Th>
@@ -118,7 +122,9 @@ const History = () => {
                 <Tbody>
                   {history &&
                     history
-                      .map((item) => <Row key={item} item={item} />)
+                      .map((item) => (
+                        <Row key={item} item={item} jsonHandler={jsonHandler} />
+                      ))
                       .reverse()}
                 </Tbody>
               </Table>
@@ -132,9 +138,16 @@ const History = () => {
 
 export default History;
 
-function Row({ item }) {
+function Row({ item, jsonHandler }) {
   return (
     <Tr>
+      <Td>
+        <Td>
+          <ReactJson src={item} collapsed={true} />
+        </Td>
+        <Button onClick={jsonHandler}> copy</Button>
+      </Td>
+      <Td>{item.success === 1 ? 'Success' : 'Fail'}</Td>
       <Td>{item.request}</Td>
       <Td>{item.message}</Td>
       <Td>{item.identification_number}</Td>

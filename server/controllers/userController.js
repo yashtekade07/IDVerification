@@ -45,6 +45,7 @@ export const getUser = catchAsyncError(async(req,res,next)=>{
         })
         return res.status(200).json({
             success:true,
+            message:"User Fetched Successfully",
             user,
         });
     }
@@ -168,11 +169,11 @@ export const deleteUser = catchAsyncError(async(req,res,next)=>{
             message:"User Deleted successfully",
             request:"DELETE",
             identification_number,
-            name,
-            last_name,
-            "date-of-birth":date_of_birth,
-            "date-of-issue":date_of_issue,
-            "date-of-expiry":date_of_expiry,
+            name:user.name,
+            last_name:user.last_name,
+            "date-of-birth":user["date-of-birth"],
+            "date-of-issue":user["date-of-issue"],
+            "date-of-expiry":user["date-of-expiry"],
         })
         await user.deleteOne();
         return res.status(200).json({

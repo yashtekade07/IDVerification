@@ -6,10 +6,11 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Upload, Update as UpdateProfile } from '../redux/actions/user.js';
+import toast from 'react-hot-toast';
 const Update = () => {
   const [id, setId] = useState();
   const [name, setName] = useState();
@@ -18,7 +19,7 @@ const Update = () => {
   const [dateOfBirth, setDateOfBirth] = useState();
   const [dateOfIssue, setDateOfIssue] = useState();
   const [dateOfExpiry, setDateOfExpiry] = useState();
-  const { loading ,message,error} = useSelector((state) => state.user);
+  const { loading, message, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   //   const navigate = useNavigate();
   const submitHandler = async (e) => {
@@ -36,7 +37,16 @@ const Update = () => {
       )
     );
   };
-
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+  }, [message, error]);
   return (
     <Container py={'12'} minH={'90vh'}>
       <form onSubmit={submitHandler}>

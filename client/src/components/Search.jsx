@@ -17,23 +17,24 @@ import {
   VStack,
   flexbox,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { View } from '../redux/actions/user';
-import JsonViewer from './CopyJson';
+import ReactJson from 'react-json-view';
+import toast from 'react-hot-toast';
 const Search = () => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
   const dispatch = useDispatch();
   const [copied, setCopied] = useState(false);
-  const { loading, user } = useSelector((state) => state.user);
+  const { loading, user, message, error } = useSelector((state) => state.user);
   const submitHandler = async (e) => {
     console.log(id);
     e.preventDefault();
     await dispatch(View({ id, name, lastName }));
   };
-  const jsonHandler = async (e) => {
+  const jsonHandler = async () => {
     navigator.clipboard
       .writeText(JSON.stringify(user, null, 2))
       .then(() => setCopied(true))
@@ -41,6 +42,17 @@ const Search = () => {
 
     setTimeout(() => setCopied(false), 1500); // Reset copy state after 1.5 seconds
   };
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+    // dispatch(View({ id, name, lastName }));
+  }, [message, error]);
   return (
     <Container
       minH={'95vh'}
@@ -51,13 +63,10 @@ const Search = () => {
     >
       <form onSubmit={submitHandler}>
         <Heading
-          alignItems={['center']}
-          maxW={'200px'}
-          fontFamily={'sans-serif'}
-          noOfLines={3}
-          size={'xl'}
+          my={'16'}
+          textAlign={['center']}
+          textTransform={'uppercase'}
           children={'Search'}
-          pb={20}
         />
         <Text children={'Identification Number'} fontWeight={'bold'} />
         <Input
@@ -94,9 +103,9 @@ const Search = () => {
       </form>
       {
         <>
-          <HStack>
-            {user && (
-              <>
+          {user && (
+            <>
+              <HStack>
                 <Box p={['0', '12']} overflowX={'auto'}>
                   <Heading
                     textTransform={'uppercase'}
@@ -108,8 +117,8 @@ const Search = () => {
                     <Table variant={'simple'} size={'lg'}>
                       <Thead>
                         <Tr>
-                          <Th>Json</Th>
-                          <Th>Identifiction Number</Th>
+                          <Th>JSON</Th>
+                          <Th>Identification Number</Th>
                           <Th>Name</Th>
                           <Th>Last Name</Th>
                           <Th>Date of Birth</Th>
@@ -118,22 +127,19 @@ const Search = () => {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {user.map((item) => (
-                          <Row
-                            key={item}
-                            item={item}
-                            jsonHandler={jsonHandler}
-                          />
-                        ))}
+                        {user.length > 0 &&
+                          user.map((item) => (
+                            <Row item={item} jsonHandler={jsonHandler} />
+                          ))}
                       </Tbody>
                     </Table>
                   </TableContainer>
                 </Box>
-              </>
-            )}
+              </HStack>
+            </>
+          )}
 
-            <Box></Box>
-          </HStack>
+          <Box></Box>
         </>
       }
     </Container>
@@ -145,9 +151,12 @@ function Row({ item, jsonHandler }) {
   return (
     <Tr>
       <Td>
-        <Button onClick={jsonHandler}> JSON</Button>
+        <Td>
+          <ReactJson src={item} collapsed={true} />
+        </Td>
+        <Button onClick={jsonHandler}> copy</Button>
       </Td>
-      <Td>#{item.identification_number}</Td>
+      <Td>{item.identification_number}</Td>
       <Td>{item.name}</Td>
       <Td>{item.last_name}</Td>
       <Td>{item['date-of-birth']}</Td>

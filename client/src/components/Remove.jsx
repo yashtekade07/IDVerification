@@ -6,21 +6,29 @@ import {
   Text,
   VStack,
 } from '@chakra-ui/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Delete } from '../redux/actions/user.js';
+import toast from 'react-hot-toast';
 const Remove = () => {
   const [id, setId] = useState('');
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { loading, message, error } = useSelector((state) => state.user);
   const submitHandler = async (e) => {
     e.preventDefault();
     await dispatch(Delete(id));
-    navigate('/');
   };
-
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch({ type: 'clearError' });
+    }
+    if (message) {
+      toast.success(message);
+      dispatch({ type: 'clearMessage' });
+    }
+  }, [message, error]);
   return (
     <Container py={'12'} minH={'90vh'}>
       <form onSubmit={submitHandler}>
@@ -32,7 +40,7 @@ const Remove = () => {
         />
         <VStack spacing={'4'}>
           <VStack alignItems={'flex-start'} w={'full'}>
-            <Text children={'Identifiaction Number'} fontWeight={'bold'} />
+            <Text children={'Identification Number'} fontWeight={'bold'} />
             <Input
               value={id}
               onChange={(e) => setId(e.target.value)}
