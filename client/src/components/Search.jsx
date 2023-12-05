@@ -43,8 +43,8 @@ const Search = () => {
 
     setTimeout(() => setCopied(false), 1500); // Reset copy state after 1.5 seconds
   };
+
   useEffect(() => {
-    toast.error(error);
     if (error) {
       toast.error(error);
       dispatch({ type: 'clearError' });
@@ -53,11 +53,17 @@ const Search = () => {
       toast.success(message);
       dispatch({ type: 'clearMessage' });
     }
-    // dispatch(View({ id, name, lastName }));
+    // dispatch(View({ id:'', name='', lastName }));
   }, [message, error, dispatch]);
 
   return (
-    <Container py={'12'} minH={'90vh'}>
+    <Container
+      minH={'95vh'}
+      maxW='container.lg'
+      paddingY={'8'}
+      justifyContent={'center'}
+      alignItems={['center']}
+    >
       <form onSubmit={submitHandler}>
         <Heading
           children={'Search'}
@@ -140,37 +146,35 @@ const Search = () => {
         <>
           {user && (
             <>
-              <HStack>
-                <Box p={['0', '12']} overflowX={'auto'}>
-                  <Heading
-                    textTransform={'uppercase'}
-                    textAlign={['center', 'left']}
-                    my={'16'}
-                    children={'All Users'}
-                  />
-                  <TableContainer w={['100vw', 'full']}>
-                    <Table variant={'simple'} size={'lg'}>
-                      <Thead>
-                        <Tr>
-                          <Th>JSON</Th>
-                          <Th>Identification Number</Th>
-                          <Th>Name</Th>
-                          <Th>Last Name</Th>
-                          <Th>Date of Birth</Th>
-                          <Th>Date of Issue</Th>
-                          <Th>Date of Expiry</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {user.length > 0 &&
-                          user.map((item) => (
-                            <Row item={item} jsonHandler={jsonHandler} />
-                          ))}
-                      </Tbody>
-                    </Table>
-                  </TableContainer>
-                </Box>
-              </HStack>
+              <Box p={['0']} overflowX={'auto'}>
+                <Heading
+                  textTransform={'uppercase'}
+                  textAlign={['center', 'left']}
+                  my={'16'}
+                  children={'All Users'}
+                />
+                <TableContainer maxW={['70vw', 'full']}>
+                  <Table variant={'simple'} size={'lg'}>
+                    <Thead>
+                      <Tr>
+                        <Th>JSON</Th>
+                        <Th>Identification Number</Th>
+                        <Th>Name</Th>
+                        <Th>Last Name</Th>
+                        <Th>Date of Birth</Th>
+                        <Th>Date of Issue</Th>
+                        <Th>Date of Expiry</Th>
+                      </Tr>
+                    </Thead>
+                    <Tbody>
+                      {user.length > 0 &&
+                        user.map((item) => (
+                          <Row item={item} jsonHandler={jsonHandler} />
+                        ))}
+                    </Tbody>
+                  </Table>
+                </TableContainer>
+              </Box>
             </>
           )}
 

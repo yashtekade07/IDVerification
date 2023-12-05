@@ -30,7 +30,7 @@ const Schema = new mongoose.Schema({
         type:Date,
     },
 },{
-    timestamps: 1
-  })
+    timestamps:true
+})
 
 export const History=mongoose.model("History",Schema);

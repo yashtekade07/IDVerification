@@ -11,6 +11,7 @@ export const userReducer=createReducer({},{
     },
     getFail:(state,action)=>{
         state.loading=false;
+        state.user=null
         state.error=action.payload;
     },
     updateProfileRequest:(state)=>{

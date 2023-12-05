@@ -22,6 +22,7 @@ const Schema= new mongoose.Schema({
     'date-of-expiry':{
         type:Date,
     },
+},{
     timestamps:true
 });
 Schema.index({name: 1 , last_name : 1}, {unique: true});

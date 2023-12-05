@@ -36,7 +36,9 @@ const Home = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [imageDetails, setImageDetails] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(null, () => {
+    console.log(image);
+  });
   const [copied, setCopied] = useState(false);
   const { profile, loading, error, message } = useSelector(
     (state) => state.profile
@@ -50,7 +52,15 @@ const Home = () => {
       setSelectedImage(null);
     } else {
       setErrorMessage('');
-      setSelectedImage(file);
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onloadend = () => {
+        setImage(reader.result);
+        setSelectedImage(file);
+      };
+      console.log(image);
     }
     if (localStorage.getItem('uploadedImage')) {
       localStorage.removeItem('uploadedImage');
@@ -194,7 +204,7 @@ const Home = () => {
         <VStack width={'full'} alignItems={['center']} spacing={'8'}>
           <div>
             <Box my={'3'} display={'flex'} justifyContent={'center'}>
-              <Avatar src={selectedImage} size={'xl'} mt={'50px'} mb={'40px'} />
+              <Avatar src={image} size={'xl'} mt={'50px'} mb={'40px'} />
             </Box>
             <Input
               accept='image/*'

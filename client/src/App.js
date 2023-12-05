@@ -9,9 +9,10 @@ import Loader from "./components/Loader";
 import { useSelector } from "react-redux";
 function App() {
   const {loading}=useSelector(state=>state.user);
+  const {loading:profileloading}=useSelector(state=>state.profile)
   return (
     <Router>
-    {loading?(<Loader/>):(
+    {(loading || profileloading)?(<Loader/>):(
       <>
     <Header/>
     <Routes>

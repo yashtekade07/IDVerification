@@ -1,10 +1,10 @@
 import {server} from '../store'
 import axios from 'axios'
 
-export const getHistory=({id='',name='',last_name=''})=>async(dispatch)=>{
+export const getHistory=({id='',name='',last_name='',request=""})=>async(dispatch)=>{
     try {
         dispatch({type:"getHistoryRequest"});
-        const {data}=await axios.get(`${server}/history?identification_number=${id}&name=${name}&last_name=${last_name}`,{
+        const {data}=await axios.get(`${server}/history?identification_number=${id}&name=${name}&last_name=${last_name}&request=${request}`,{
             headers:{
             "Content-Type":"application/json"
             },

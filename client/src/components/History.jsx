@@ -12,6 +12,7 @@ import {
   Th,
   Thead,
   Tr,
+  VStack,
 } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { useState } from 'react';
@@ -23,6 +24,7 @@ const History = () => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [request, setRequest] = useState('');
   const [copied, setCopied] = useState(false);
   const dispatch = useDispatch();
   const { loading, history, message, error } = useSelector(
@@ -31,7 +33,9 @@ const History = () => {
   const submitHandler = async (e) => {
     console.log('After clicking submit', name, lastName, id);
     e.preventDefault();
-    await dispatch(getHistory({ id, name: name, last_name: lastName }));
+    await dispatch(
+      getHistory({ id, name: name, last_name: lastName, request: request })
+    );
   };
   const jsonHandler = async () => {
     navigator.clipboard
@@ -51,7 +55,9 @@ const History = () => {
       toast.success(message);
       dispatch({ type: 'clearMessage' });
     }
-    dispatch(getHistory({ id, name: name, last_name: lastName }));
+    dispatch(
+      getHistory({ id, name: name, last_name: lastName, request: request })
+    );
   }, [dispatch, message, error]);
   return (
     <>
@@ -69,39 +75,56 @@ const History = () => {
             my={'16'}
             children={'History'}
           />
-
-          <Text children={'Identification Number'} fontWeight={'bold'} />
-          <Input
-            value={id}
-            onChange={(e) => setId(e.target.value)}
-            placeholder='Search By Identification Number'
-            type='text'
-            focusBorderColor='yellow.500'
-          />
-          <Text children={'First Name'} fontWeight={'bold'} />
-          <Input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder='Search By Name'
-            type='text'
-            focusBorderColor='yellow.500'
-          />
-          <Text children={'Last Name'} fontWeight={'bold'} />
-          <Input
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            placeholder='Search By Last Name...'
-            type='text'
-            focusBorderColor='yellow.500'
-          />
-          <Button
-            isLoading={loading}
-            w={'full'}
-            colorScheme='yellow'
-            type='submit'
-          >
-            Submit
-          </Button>
+          <VStack spacing={'4'}>
+            <VStack alignItems={'flex-start'} w={'full'}>
+              <Text children={'Identification Number'} fontWeight={'bold'} />
+              <Input
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+                placeholder='Search By Identification Number'
+                type='text'
+                focusBorderColor='yellow.500'
+              />
+            </VStack>
+            <VStack alignItems={'flex-start'} w={'full'}>
+              <Text children={'First Name'} fontWeight={'bold'} />
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder='Search By Name'
+                type='text'
+                focusBorderColor='yellow.500'
+              />
+            </VStack>
+            <VStack alignItems={'flex-start'} w={'full'}>
+              <Text children={'Last Name'} fontWeight={'bold'} />
+              <Input
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                placeholder='Search By Last Name...'
+                type='text'
+                focusBorderColor='yellow.500'
+              />
+            </VStack>
+            <VStack alignItems={'flex-start'} w={'full'}>
+              <Text children={'Request'} fontWeight={'bold'} />
+              <Input
+                value={request}
+                onChange={(e) => setRequest(e.target.value)}
+                placeholder='Search By Request...'
+                type='text'
+                focusBorderColor='yellow.500'
+              />
+            </VStack>
+            <Button
+              isLoading={loading}
+              w={'full'}
+              colorScheme='yellow'
+              type='submit'
+            >
+              Submit
+            </Button>
+          </VStack>
         </form>
         <>
           <Box p={['0', '12']} overflowX={'auto'}>
