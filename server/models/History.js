@@ -19,7 +19,6 @@ const Schema = new mongoose.Schema({
     },
     'identification_number':{
         type:String,
-        required:true,
     },
     'date-of-birth' :{
         type:Date,

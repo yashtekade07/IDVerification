@@ -1,7 +1,8 @@
 import {server} from '../store'
 import axios from 'axios'
 
-export const View=({id,name,lastName})=>async(dispatch)=>{
+export const View=({id,name='',lastName=''})=>async(dispatch)=>{
+    console.log(id)
     try {
         dispatch({type:"getRequest"});
         const {data}=await axios.get(`${server}/user?identification_number=${id}&name=${name}&last_name=${lastName}`)

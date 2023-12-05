@@ -6,6 +6,9 @@ export const getUser = catchAsyncError(async(req,res,next)=>{
     const identification_number=req.query.identification_number || "";
     const name=req.query.name || "";
     const last_name=req.query.last_name || "";
+    const date_of_birth=req.query.date_of_birth || "";
+    const date_of_issue=req.query.date_of_issue || "";
+    const date_of_expiry=req.query.date_of_expiry || "";
     const user= await User.find({
         identification_number:{
             $regex:identification_number,
@@ -18,7 +21,16 @@ export const getUser = catchAsyncError(async(req,res,next)=>{
         last_name:{
             $regex:last_name,
             $options:"i",
-        }
+        },
+        // 'date-of-birth':{
+        //     $regex:date_of_birth,
+        // },
+        // 'date-of-issue':{
+        //     $regex:date_of_issue,
+        // },
+        // 'date-of-expiry':{
+        //     $regex:date_of_expiry,
+        // }
     })
     if(user.length===0){
         await History.create({

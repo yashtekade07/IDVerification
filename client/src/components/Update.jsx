@@ -58,7 +58,7 @@ const Update = () => {
         />
         <VStack spacing={'4'}>
           <VStack alignItems={'flex-start'} w={'full'}>
-            <Text children={'Identifiaction Number'} fontWeight={'bold'} />
+            <Text children={'Identification Number'} fontWeight={'bold'} />
             <Input
               value={id}
               onChange={(e) => setId(e.target.value)}

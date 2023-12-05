@@ -25,14 +25,17 @@ import toast from 'react-hot-toast';
 const Search = () => {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [lastname, setLastName] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState();
+  const [dateOfIssue, setDateOfIssue] = useState();
+  const [dateOfExpiry, setDateOfExpiry] = useState();
   const dispatch = useDispatch();
   const [copied, setCopied] = useState(false);
   const { loading, user, message, error } = useSelector((state) => state.user);
   const submitHandler = async (e) => {
     console.log(id);
     e.preventDefault();
-    await dispatch(View({ id, name, lastName }));
+    await dispatch(View({ id, name: name, last_name: lastname }));
   };
   const jsonHandler = async () => {
     navigator.clipboard
@@ -52,54 +55,86 @@ const Search = () => {
       dispatch({ type: 'clearMessage' });
     }
     // dispatch(View({ id, name, lastName }));
-  }, [message, error]);
+  }, [message, error, dispatch]);
   return (
-    <Container
-      minH={'95vh'}
-      maxW='container.lg'
-      paddingY={'8'}
-      justifyContent={'center'}
-      alignItems={['center']}
-    >
+    <Container py={'12'} minH={'90vh'}>
       <form onSubmit={submitHandler}>
         <Heading
+          children={'Search User'}
           my={'16'}
           textAlign={['center']}
           textTransform={'uppercase'}
-          children={'Search'}
         />
-        <Text children={'Identification Number'} fontWeight={'bold'} />
-        <Input
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-          placeholder='Search By Identification Number'
-          type='text'
-          focusBorderColor='yellow.500'
-        />
-        <Text children={'First Name'} fontWeight={'bold'} />
-        <Input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder='Search By Name'
-          type='text'
-          focusBorderColor='yellow.500'
-        />
-        <Text children={'Last Name'} fontWeight={'bold'} />
-        <Input
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-          placeholder='Search By Last Name...'
-          type='text'
-          focusBorderColor='yellow.500'
-        />
-        <Button
-          isLoading={loading}
-          w={'full'}
-          colorScheme='yellow'
-          type='submit'
-        >
-          Submit
-        </Button>
+        <VStack spacing={'4'}>
+          <VStack alignItems={'flex-start'} w={'full'}>
+            <Text children={'Identification Number'} fontWeight={'bold'} />
+            <Input
+              value={id}
+              onChange={(e) => setId(e.target.value)}
+              placeholder='1234 1234 1234'
+              type='text'
+              focusBorderColor='yellow.500'
+            />
+          </VStack>
+          <VStack alignItems={'flex-start'} w={'full'}>
+            <Text children={'Name'} fontWeight={'bold'} />
+            <Input
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder='Abc '
+              type='text'
+              focusBorderColor='yellow.500'
+            />
+          </VStack>
+          <VStack alignItems={'flex-start'} w={'full'}>
+            <Text children={'Last Name'} fontWeight={'bold'} />
+            <Input
+              value={lastname}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder='Def'
+              type='text'
+              focusBorderColor='yellow.500'
+            />
+          </VStack>
+          <VStack alignItems={'flex-start'} w={'full'}>
+            <Text children={'Date of Birth'} fontWeight={'bold'} />
+            <Input
+              value={dateOfBirth}
+              onChange={(e) => setDateOfBirth(e.target.value)}
+              placeholder='YYYY-MM-DD'
+              type='text'
+              focusBorderColor='yellow.500'
+            />
+          </VStack>
+          <VStack alignItems={'flex-start'} w={'full'}>
+            <Text children={'Date of Issue'} fontWeight={'bold'} />
+            <Input
+              value={dateOfIssue}
+              onChange={(e) => setDateOfIssue(e.target.value)}
+              placeholder='YYYY-MM-DD'
+              type='text'
+              focusBorderColor='yellow.500'
+            />
+          </VStack>
+          <VStack alignItems={'flex-start'} w={'full'}>
+            <Text children={'Date of Expiry'} fontWeight={'bold'} />
+            <Input
+              value={dateOfExpiry}
+              onChange={(e) => setDateOfExpiry(e.target.value)}
+              placeholder='YYYY-MM-DD'
+              type='text'
+              focusBorderColor='yellow.500'
+            />
+          </VStack>
+          <Button
+            isLoading={loading}
+            w={'full'}
+            colorScheme='yellow'
+            type='submit'
+          >
+            Search
+          </Button>
+        </VStack>
       </form>
       {
         <>
