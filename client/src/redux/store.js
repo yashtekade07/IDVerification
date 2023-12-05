@@ -1,10 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
-import { userReducer ,} from "./reducers/userReducer.js";
+import { userReducer ,profileReducer} from "./reducers/userReducer.js";
 import { historyReducer } from "./reducers/historyReducer.js";
 
 const store=configureStore({
     reducer:{
         user:userReducer,
+        profile:profileReducer,
         history:historyReducer
 
     }, 

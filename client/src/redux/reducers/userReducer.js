@@ -13,20 +13,6 @@ export const userReducer=createReducer({},{
         state.loading=false;
         state.error=action.payload;
     },
-
-    postRequest:(state)=>{
-        state.loading=true;
-    },
-    postSuccess:(state,action)=>{
-        state.loading=false;
-        state.user=action.payload.user;
-        state.message=action.payload.message;
-    },
-    postFail:(state,action)=>{
-        state.loading=false;
-        state.error=action.payload;
-    },
-
     updateProfileRequest:(state)=>{
         state.loading=true;
     },
@@ -56,4 +42,18 @@ export const userReducer=createReducer({},{
     clearMessage:(state)=>{
         state.message=null;
     }
+});
+export const profileReducer=createReducer({},{
+    postRequest:(state)=>{
+        state.loading=true;
+    },
+    postSuccess:(state,action)=>{
+        state.loading=false;
+        state.profile=action.payload.user;
+        state.message=action.payload.message;
+    },
+    postFail:(state,action)=>{
+        state.loading=false;
+        state.error=action.payload;
+    },
 });

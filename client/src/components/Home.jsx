@@ -38,7 +38,9 @@ const Home = () => {
   const [imageDetails, setImageDetails] = useState(null);
   const [image, setImage] = useState(null);
   const [copied, setCopied] = useState(false);
-  const { user, loading, error, message } = useSelector((state) => state.user);
+  const { profile, loading, error, message } = useSelector(
+    (state) => state.profile
+  );
   const dispatch = useDispatch();
 
   const handleImageChange = (event) => {
@@ -164,7 +166,7 @@ const Home = () => {
   };
   const jsonHandler = async () => {
     navigator.clipboard
-      .writeText(JSON.stringify(user, null, 2))
+      .writeText(JSON.stringify(profile, null, 2))
       .then(() => setCopied(true))
       .catch((err) => console.error('Failed to copy:', err));
 
@@ -216,7 +218,7 @@ const Home = () => {
         </VStack>
         <VStack>
           {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-          {user && (
+          {profile && (
             <>
               <HStack maxW={'80vw'}>
                 <Box p={['0', '12']} overflowX={'auto'}>
@@ -240,7 +242,9 @@ const Home = () => {
                         </Tr>
                       </Thead>
                       <Tbody>
-                        {user && <Row item={user} jsonHandler={jsonHandler} />}
+                        {profile && (
+                          <Row item={profile} jsonHandler={jsonHandler} />
+                        )}
                       </Tbody>
                     </Table>
                   </TableContainer>
