@@ -2,11 +2,9 @@ import {server} from '../store'
 import axios from 'axios'
 
 export const View=({id='',name='',last_name=''})=>async(dispatch)=>{
-    console.log(id)
     try {
         dispatch({type:"getRequest"});
         const {data}=await axios.get(`${server}/user?identification_number=${id}&name=${name}&last_name=${last_name}`)
-        console.log(data);
         dispatch({type:"getSuccess",payload:data.user});
     } catch (error) {
         dispatch({type:"getFail",payload:error.response.data.message});
@@ -23,7 +21,6 @@ export const Upload=(identification_number,name,last_name,date_of_birth,date_of_
             },
             withCredentials:true,
         })
-        console.log(data);
         dispatch({type:"postSuccess",payload:data});
     } catch (error) {
         dispatch({type:"postFail",payload:error.response.data.message});
@@ -47,7 +44,6 @@ export const Update=(identification_number,name,newId,last_name,date_of_birth,da
             },
             withCredentials:true,
         })
-        console.log(data);
         dispatch({type:"updateProfileSuccess",payload:data});
     } catch (error) {
         dispatch({type:"updateProfileFail",payload:error.response.data.message});
@@ -56,7 +52,6 @@ export const Update=(identification_number,name,newId,last_name,date_of_birth,da
 export const Delete=(identification_number)=>async(dispatch)=>{
     try {
         dispatch({type:"deleteProfileRequest"});
-        console.log(identification_number);
         const {data}=await axios.delete(`${server}/user`,{
             headers:{
             "Content-Type":"application/json"

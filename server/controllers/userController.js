@@ -22,15 +22,6 @@ export const getUser = catchAsyncError(async(req,res,next)=>{
             $regex:last_name,
             $options:"i",
         },
-        // 'date-of-birth':{
-        //     $regex:date_of_birth,
-        // },
-        // 'date-of-issue':{
-        //     $regex:date_of_issue,
-        // },
-        // 'date-of-expiry':{
-        //     $regex:date_of_expiry,
-        // }
     })
     if(user.length===0){
         await History.create({
@@ -126,9 +117,11 @@ export const updateUser = catchAsyncError(async(req,res,next)=>{
     if(!user) {
         await History.create({
             success:false,
-            message:"User doest exist",
+            message:"User doesnt exist",
             request:"PUT",
             identification_number,
+            name:"",
+            last_name:""
         })
         return next(new ErrorHandler("User does not exist",404));
     }
@@ -140,18 +133,18 @@ export const updateUser = catchAsyncError(async(req,res,next)=>{
     if(date_of_issue) user["date-of-issue"]=date_of_issue;
     if(date_of_expiry) user["date-of-expiry"]=date_of_expiry;
 
-    await user.save();
     await History.create({
         success:true,
         message:"User Updated successfully",
         request:"PUT",
-        identification_number,
-        name,
-        last_name,
+        identification_number:new_id||'',
+        name:name||'',
+        last_name:last_name||'',
         "date-of-birth":date_of_birth,
         "date-of-issue":date_of_issue,
         "date-of-expiry":date_of_expiry,
     })
+    await user.save();
     return res.status(200).json({
         success:true,
         user, 

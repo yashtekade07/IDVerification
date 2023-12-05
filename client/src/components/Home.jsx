@@ -89,10 +89,8 @@ const Home = () => {
           );
 
           const data = await response.json();
-          console.log(data);
           const extractedFields = extractFields(data); // Extract specific fields
           setImageDetails(extractedFields);
-          console.log(extractedFields);
         } catch (error) {
           console.error('Error:', error);
         }

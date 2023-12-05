@@ -32,7 +32,6 @@ const Search = () => {
   const [copied, setCopied] = useState(false);
   const { loading, user, message, error } = useSelector((state) => state.user);
   const submitHandler = async (e) => {
-    console.log(id);
     e.preventDefault();
     await dispatch(View({ id, name: name, last_name: lastname }));
   };
@@ -45,6 +44,7 @@ const Search = () => {
     setTimeout(() => setCopied(false), 1500); // Reset copy state after 1.5 seconds
   };
   useEffect(() => {
+    toast.error(error);
     if (error) {
       toast.error(error);
       dispatch({ type: 'clearError' });
@@ -55,11 +55,12 @@ const Search = () => {
     }
     // dispatch(View({ id, name, lastName }));
   }, [message, error, dispatch]);
+
   return (
     <Container py={'12'} minH={'90vh'}>
       <form onSubmit={submitHandler}>
         <Heading
-          children={'Search User'}
+          children={'Search'}
           my={'16'}
           textAlign={['center']}
           textTransform={'uppercase'}

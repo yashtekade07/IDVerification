@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 
 const Schema = new mongoose.Schema({
     success:{
@@ -28,7 +28,9 @@ const Schema = new mongoose.Schema({
     },
     'date-of-expiry':{
         type:Date,
-    }
+    },
+},{
+    timestamps: 1
+  })
 
-})
 export const History=mongoose.model("History",Schema);

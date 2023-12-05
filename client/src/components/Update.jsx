@@ -23,7 +23,6 @@ const Update = () => {
   const dispatch = useDispatch();
   //   const navigate = useNavigate();
   const submitHandler = async (e) => {
-    console.log(id);
     e.preventDefault();
     await dispatch(
       UpdateProfile(

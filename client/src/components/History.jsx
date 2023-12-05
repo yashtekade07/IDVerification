@@ -29,8 +29,9 @@ const History = () => {
     (state) => state.history
   );
   const submitHandler = async (e) => {
+    console.log('After clicking submit', name, lastName, id);
     e.preventDefault();
-    await dispatch(getHistory({ id, name, lastName }));
+    await dispatch(getHistory({ id, name: name, last_name: lastName }));
   };
   const jsonHandler = async () => {
     navigator.clipboard
@@ -41,6 +42,7 @@ const History = () => {
     setTimeout(() => setCopied(false), 1500); // Reset copy state after 1.5 seconds
   };
   useEffect(() => {
+    console.log(history);
     if (error) {
       toast.error(error);
       dispatch({ type: 'clearError' });
@@ -49,7 +51,7 @@ const History = () => {
       toast.success(message);
       dispatch({ type: 'clearMessage' });
     }
-    dispatch(getHistory({ id, name, lastName }));
+    dispatch(getHistory({ id, name: name, last_name: lastName }));
   }, [dispatch, message, error]);
   return (
     <>
@@ -122,8 +124,8 @@ const History = () => {
                 <Tbody>
                   {history &&
                     history
-                      .map((item) => (
-                        <Row key={item} item={item} jsonHandler={jsonHandler} />
+                      .map((item, _) => (
+                        <Row key={_} item={item} jsonHandler={jsonHandler} />
                       ))
                       .reverse()}
                 </Tbody>
@@ -147,7 +149,7 @@ function Row({ item, jsonHandler }) {
         </Td>
         <Button onClick={jsonHandler}> copy</Button>
       </Td>
-      <Td>{item.success === 1 ? 'Success' : 'Fail'}</Td>
+      <Td>{item.success === true ? 'Success' : 'Fail'}</Td>
       <Td>{item.request}</Td>
       <Td>{item.message}</Td>
       <Td>{item.identification_number}</Td>
